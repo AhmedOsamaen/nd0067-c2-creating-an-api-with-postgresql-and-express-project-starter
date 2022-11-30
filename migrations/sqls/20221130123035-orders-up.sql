@@ -1,0 +1,1 @@
+create table orders (id serial primary key,user_id bigint REFERENCES users(id),order_status varchar(10) not null);
