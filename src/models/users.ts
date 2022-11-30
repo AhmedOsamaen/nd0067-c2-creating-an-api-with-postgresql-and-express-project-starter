@@ -17,7 +17,7 @@ export type Users = {
          conn.release()
          return result.rows
      }catch(err){
-         throw new Error('could get users'+err); 
+         throw new Error('could not get users'+err); 
      }
     }
 
@@ -68,19 +68,19 @@ export type Users = {
             conn.release()
             return result.rows[0]
         }catch(err){
-            throw new Error(`could get user with id ${id}: `+err); 
+            throw new Error(`could not get user with id ${id}: `+err); 
         }
        }
 
        async delete (id: string):Promise<Users>{
         try{
             const conn = await client.connect()
-            const sql = 'delete from users where id = ($1)'
+            const sql = 'delete from users where id = ($1)  RETURNING *'
             const result = await conn.query(sql,[id])
             conn.release()
             return result.rows[0]
         }catch(err){
-            throw new Error(`could get user with id ${id}: `+err); 
+            throw new Error(`could not get user with id ${id}: `+err); 
         }
        }
  }
