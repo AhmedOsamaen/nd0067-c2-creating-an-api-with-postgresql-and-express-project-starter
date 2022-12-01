@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var jwt_auth_1 = require("../middleware/jwt-auth");
 var products_1 = require("../models/products");
 var productsStore = new products_1.ProductsStore();
 var index = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -108,7 +109,7 @@ var deleteProductById = function (req, res) { return __awaiter(void 0, void 0, v
 }); };
 var allProducts_routes = function (app) {
     app.get('/products', index);
-    app.post('/products', createProduct);
+    app.post('/products', jwt_auth_1.verifyAuthToken, createProduct);
     app.get('/products/:id', getProductById);
     app.delete('/products/:id', deleteProductById);
 };

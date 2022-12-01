@@ -3,8 +3,8 @@ import bcrypt from "bcrypt"
 import jwt from 'jsonwebtoken'
 export type Users = {
      id?:number;
-    firstName:string;
-    lastName:string;
+    firstname:string;
+    lastname:string;
     password:string;
  }
 
@@ -29,7 +29,7 @@ export type Users = {
                 user.password + pepper, 
                 parseInt(saltRounds)
               );
-            const result = await conn.query(sql,[user.firstName,user.lastName,hash])
+            const result = await conn.query(sql,[user.firstname,user.lastname,hash])
             conn.release()
             
             return result.rows[0]
@@ -42,7 +42,7 @@ export type Users = {
         const conn = await client.connect()
         const sql = 'SELECT * FROM users WHERE firstname=($1)'
     
-        const result = await conn.query(sql, [user.firstName])
+        const result = await conn.query(sql, [user.firstname])
         if(result.rows.length) {
     
           const userfromDb = result.rows[0]
@@ -55,7 +55,7 @@ export type Users = {
                 adminPass + pepper, 
                 parseInt(saltRounds)
               );
-            if(user.firstName=='Admin' && bcrypt.compareSync(user.password+pepper, hash)){
+            if(user.firstname=='Admin' && bcrypt.compareSync(user.password+pepper, hash)){
                 var token = jwt.sign({ user: user }, secret);
                 return token
             }

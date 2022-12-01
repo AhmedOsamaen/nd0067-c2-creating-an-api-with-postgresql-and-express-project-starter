@@ -71,7 +71,39 @@ var OrdersStore = /** @class */ (function () {
     };
     OrdersStore.prototype.create = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, order_status, sql, result, err_2;
+            var conn, order_status, activeOrderSql, activeOrder, sql, result, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        return [4 /*yield*/, dbconnection_1.default.connect()];
+                    case 1:
+                        conn = _a.sent();
+                        order_status = consts_1.OrderStatus.active;
+                        activeOrderSql = "select * from orders where user_id = ($1) and order_status = ($2)";
+                        return [4 /*yield*/, conn.query(activeOrderSql, [order.user_id, order_status])];
+                    case 2:
+                        activeOrder = _a.sent();
+                        if (activeOrder.rows[0]) {
+                            throw new Error("An order is already Active for user ".concat(order.user_id, " "));
+                        }
+                        sql = 'INSERT INTO Orders (user_id,order_status) VALUES($1, $2) RETURNING *';
+                        return [4 /*yield*/, conn.query(sql, [order.user_id, order_status])];
+                    case 3:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows[0]];
+                    case 4:
+                        err_2 = _a.sent();
+                        throw new Error('could not add order' + err_2);
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    OrdersStore.prototype.completeOrder = function (orderId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, order_status, sql, result, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -79,16 +111,19 @@ var OrdersStore = /** @class */ (function () {
                         return [4 /*yield*/, dbconnection_1.default.connect()];
                     case 1:
                         conn = _a.sent();
-                        order_status = consts_1.OrderStatus.active;
-                        sql = 'INSERT INTO Orders (user_id,order_status) VALUES($1, $2) RETURNING *';
-                        return [4 /*yield*/, conn.query(sql, [order.user_id, order_status])];
+                        order_status = consts_1.OrderStatus.complete;
+                        sql = 'update Orders set order_status = ($2)  where id = ($1) RETURNING *';
+                        return [4 /*yield*/, conn.query(sql, [orderId, order_status])];
                     case 2:
                         result = _a.sent();
+                        if (!result.rows[0]) {
+                            throw new Error('No Order Found');
+                        }
                         conn.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
-                        err_2 = _a.sent();
-                        throw new Error('could not add order' + err_2);
+                        err_3 = _a.sent();
+                        throw new Error('could not update order ' + err_3);
                     case 4: return [2 /*return*/];
                 }
             });
@@ -96,7 +131,7 @@ var OrdersStore = /** @class */ (function () {
     };
     OrdersStore.prototype.getById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_3;
+            var conn, sql, result, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -111,8 +146,8 @@ var OrdersStore = /** @class */ (function () {
                         conn.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
-                        err_3 = _a.sent();
-                        throw new Error("could not get order with id ".concat(id, ": ") + err_3);
+                        err_4 = _a.sent();
+                        throw new Error("could not get order with id ".concat(id, ": ") + err_4);
                     case 4: return [2 /*return*/];
                 }
             });
@@ -120,7 +155,7 @@ var OrdersStore = /** @class */ (function () {
     };
     OrdersStore.prototype.delete = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_4;
+            var conn, sql, result, err_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -133,10 +168,13 @@ var OrdersStore = /** @class */ (function () {
                     case 2:
                         result = _a.sent();
                         conn.release();
+                        if (!result.rows[0]) {
+                            throw new Error('No order found');
+                        }
                         return [2 /*return*/, result.rows[0]];
                     case 3:
-                        err_4 = _a.sent();
-                        throw new Error("could not delete order with id ".concat(id, ": ") + err_4);
+                        err_5 = _a.sent();
+                        throw new Error("could not delete order with id ".concat(id, ": ") + err_5);
                     case 4: return [2 /*return*/];
                 }
             });

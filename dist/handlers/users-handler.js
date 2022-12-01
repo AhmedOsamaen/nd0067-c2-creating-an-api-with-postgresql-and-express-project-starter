@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var users_1 = require("../models/users");
+var jwt_auth_1 = require("../middleware/jwt-auth");
 var userStore = new users_1.UsersStore();
 var index = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
@@ -69,8 +70,8 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 user = {
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
+                    firstname: req.body.firstName,
+                    lastname: req.body.lastName,
                     password: req.body.password
                 };
                 return [4 /*yield*/, userStore.create(user)];
@@ -94,8 +95,8 @@ var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, vo
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 user = {
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
+                    firstname: req.body.firstName,
+                    lastname: req.body.lastName,
                     password: req.body.password
                 };
                 return [4 /*yield*/, userStore.authenticate(user)];
@@ -133,10 +134,10 @@ var deleteUserById = function (req, res) { return __awaiter(void 0, void 0, void
     });
 }); };
 var allUsers_routes = function (app) {
-    app.get('/users', index);
-    app.post('/users', createUser);
-    app.get('/users/:id', getUserById);
-    app.delete('/users/:id', deleteUserById);
+    app.get('/users', jwt_auth_1.verifyAuthToken, index);
+    app.post('/users', jwt_auth_1.verifyAuthToken, createUser);
+    app.get('/users/:id', jwt_auth_1.verifyAuthToken, getUserById);
+    app.delete('/users/:id', jwt_auth_1.verifyAuthToken, deleteUserById);
     app.post('/users/auth', authenticateUser);
 };
 exports.default = allUsers_routes;

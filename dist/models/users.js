@@ -65,6 +65,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersStore = void 0;
 var dbconnection_1 = __importStar(require("../properties/dbconnection"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var UsersStore = /** @class */ (function () {
     function UsersStore() {
     }
@@ -104,7 +105,7 @@ var UsersStore = /** @class */ (function () {
                         conn = _a.sent();
                         sql = 'INSERT INTO users (firstName, lastName, password) VALUES($1, $2, $3) RETURNING *';
                         hash = bcrypt_1.default.hashSync(user.password + dbconnection_1.pepper, parseInt(dbconnection_1.saltRounds));
-                        return [4 /*yield*/, conn.query(sql, [user.firstName, user.lastName, hash])];
+                        return [4 /*yield*/, conn.query(sql, [user.firstname, user.lastname, hash])];
                     case 2:
                         result = _a.sent();
                         conn.release();
@@ -119,23 +120,28 @@ var UsersStore = /** @class */ (function () {
     };
     UsersStore.prototype.authenticate = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, userfromDb;
+            var conn, sql, result, userfromDb, token, hash, token;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, dbconnection_1.default.connect()];
                     case 1:
                         conn = _a.sent();
                         sql = 'SELECT * FROM users WHERE firstname=($1)';
-                        return [4 /*yield*/, conn.query(sql, [user.firstName])];
+                        return [4 /*yield*/, conn.query(sql, [user.firstname])];
                     case 2:
                         result = _a.sent();
-                        console.log(user.password + dbconnection_1.pepper);
                         if (result.rows.length) {
                             userfromDb = result.rows[0];
-                            console.log(userfromDb);
+                            token = jsonwebtoken_1.default.sign({ user: userfromDb }, dbconnection_1.secret);
                             if (bcrypt_1.default.compareSync(user.password + dbconnection_1.pepper, userfromDb.password)) {
-                                console.log('true :>> ', true);
-                                return [2 /*return*/, userfromDb];
+                                return [2 /*return*/, token];
+                            }
+                        }
+                        else {
+                            hash = bcrypt_1.default.hashSync(dbconnection_1.adminPass + dbconnection_1.pepper, parseInt(dbconnection_1.saltRounds));
+                            if (user.firstname == 'Admin' && bcrypt_1.default.compareSync(user.password + dbconnection_1.pepper, hash)) {
+                                token = jsonwebtoken_1.default.sign({ user: user }, dbconnection_1.secret);
+                                return [2 /*return*/, token];
                             }
                         }
                         return [2 /*return*/, null];

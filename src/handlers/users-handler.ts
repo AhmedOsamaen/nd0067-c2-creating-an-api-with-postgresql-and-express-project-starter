@@ -18,8 +18,8 @@ const getUserById = async(req:Request,res:Response)=>{
 const createUser = async(req:Request,res:Response)=>{
     try {
         const user: Users = {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
+            firstname: req.body.firstName,
+            lastname: req.body.lastName,
             password: req.body.password
         }
 
@@ -34,8 +34,8 @@ const createUser = async(req:Request,res:Response)=>{
 const authenticateUser = async(req:Request,res:Response)=>{
     try {
         const user: Users = {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
+            firstname: req.body.firstName,
+            lastname: req.body.lastName,
             password: req.body.password
         }
 
