@@ -5,7 +5,7 @@ This Repo is a fork for the FWD Starter project
 ### 1 DB Setup And Configuration
 
     1- create .env file in your project directory
-    2- Add the DB & APP Configraution as shown:
+    2- Add the DB & APP Configraution as follows:
                 POSTGRES_HOST=127.0.0.1
                 POSTGRES_DB=eccommerce_store
                 POSTGRES_TEST_DB=eccommerce_store_test
