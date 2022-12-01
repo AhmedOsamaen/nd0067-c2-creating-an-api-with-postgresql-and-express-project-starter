@@ -1,4 +1,5 @@
 import express, {Request, Response} from 'express'
+import { verifyAuthToken } from '../middleware/jwt-auth';
 import { Orders, OrdersStore } from '../models/orders';
 import { OrderProductsService } from '../services/order-product.service';
 
@@ -34,6 +35,16 @@ const getOrderProductsDetailsByOrderId = async(req:Request,res:Response)=>{
 const getActiveOrderByUserId = async(req:Request,res:Response)=>{
     try {
         const orders = await orderProdService.getActiveOrderProductsDetails(req.params.id)
+        res.json(orders);
+    } catch(err) {
+        res.status(400)
+        res.send("Res:"+err)
+    }
+}
+
+const getCompletedOrdersByUserId = async(req:Request,res:Response)=>{
+    try {
+        const orders = await orderProdService.completedOrders(req.params.id)
         res.json(orders);
     } catch(err) {
         res.status(400)
@@ -93,7 +104,8 @@ const allOrders_routes = (app: express.Application)=>{
     app.post('/orders', createorder)
     app.put('/orders/complete/:id', completeOrder)
     app.get('/orders/:id', getOrderProductsDetailsByOrderId)
-    app.get('/orders/user/:id', getActiveOrderByUserId)
+    app.get('/orders/user/:id',verifyAuthToken, getActiveOrderByUserId)
+    app.get('/orders/user/complete/:id',verifyAuthToken, getCompletedOrdersByUserId)
     app.delete('/orders/:id', deleteorderById)
     app.post('/orders/:id/products', addProductToOrder)
 }

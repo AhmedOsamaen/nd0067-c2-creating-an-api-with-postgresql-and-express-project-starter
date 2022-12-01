@@ -1,6 +1,6 @@
-import client, { pepper, saltRounds } from "../properties/dbconnection"
+import client, { adminPass, pepper, saltRounds, secret } from "../properties/dbconnection"
 import bcrypt from "bcrypt"
-
+import jwt from 'jsonwebtoken'
 export type Users = {
      id?:number;
     firstName:string;
@@ -31,30 +31,34 @@ export type Users = {
               );
             const result = await conn.query(sql,[user.firstName,user.lastName,hash])
             conn.release()
+            
             return result.rows[0]
         }catch(err){
             throw new Error('could not add user'+err); 
         }
     }
 
-    async authenticate(user:Users): Promise<Users|null> {
+    async authenticate(user:Users): Promise<string|null> {
         const conn = await client.connect()
         const sql = 'SELECT * FROM users WHERE firstname=($1)'
     
         const result = await conn.query(sql, [user.firstName])
-    
-        console.log(user.password+pepper)
-    
         if(result.rows.length) {
     
           const userfromDb = result.rows[0]
-    
-          console.log(userfromDb)
-    
+          var token = jwt.sign({ user: userfromDb }, secret);
           if (bcrypt.compareSync(user.password+pepper, userfromDb.password)) {
-            console.log('true :>> ', true);
-            return userfromDb
+            return token
           }
+        }else{
+            const hash = bcrypt.hashSync(
+                adminPass + pepper, 
+                parseInt(saltRounds)
+              );
+            if(user.firstName=='Admin' && bcrypt.compareSync(user.password+pepper, hash)){
+                var token = jwt.sign({ user: user }, secret);
+                return token
+            }
         }
     
         return null

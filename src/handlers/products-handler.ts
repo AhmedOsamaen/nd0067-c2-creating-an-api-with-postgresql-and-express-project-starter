@@ -1,4 +1,5 @@
 import express, {Request, Response} from 'express'
+import { verifyAuthToken } from '../middleware/jwt-auth';
 import { Products, ProductsStore } from '../models/products';
 
 
@@ -40,7 +41,7 @@ const deleteProductById = async(req:Request,res:Response)=>{
 
 const allProducts_routes = (app: express.Application)=>{
     app.get('/products',index)
-    app.post('/products', createProduct)
+    app.post('/products',verifyAuthToken, createProduct)
     app.get('/products/:id', getProductById)
     app.delete('/products/:id', deleteProductById)
 }

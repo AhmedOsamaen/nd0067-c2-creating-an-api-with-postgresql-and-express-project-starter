@@ -128,4 +128,31 @@ export class OrderProductsService{
             throw new Error(`Could not get order for user ${userId}: ${err}`)
         }
       }
+
+      async completedOrders(userId: string):Promise<OrderProducts[]>{
+        try{
+          const ordersql = 'SELECT * FROM orders WHERE user_id=($1) and order_status =($2)'
+          const conn = await client.connect()
+
+          const orderResult = await conn.query(ordersql, [userId,OrderStatus.complete])
+  
+          
+            let orderProdsResult:OrderProducts[]=[]
+            if(orderResult.rows){
+                const orderProductsSql = 'SELECT product_id, quantity FROM orders_products WHERE order_id=($1)'
+                for(let i of orderResult.rows){
+                    const prodResult = await conn.query(orderProductsSql, [i.id])
+    
+                    const orderProduct = prodResult.rows
+
+                    const orderProducts :OrderProducts = {...i,products:orderProduct}
+                    orderProdsResult.push(orderProducts);
+                }
+            }
+            conn.release()
+            return orderProdsResult
+        }catch(err){
+            throw new Error('could not get Orders'+err); 
+        }
+       }
 }

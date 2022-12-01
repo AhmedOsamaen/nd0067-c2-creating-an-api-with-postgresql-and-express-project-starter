@@ -8,7 +8,9 @@ const {
     POSTGRES_USER,
     POSTGRES_PASSWORD,
     BCRYPT_PASSWORD,
-    SALT_ROUNDS
+    SALT_ROUNDS,
+    TOKEN_SECRET,
+    ADMIN_PASS
 } = process.env 
 
 const client = new Pool({
@@ -20,5 +22,7 @@ const client = new Pool({
 
 export const pepper = BCRYPT_PASSWORD;
 export const saltRounds = SALT_ROUNDS as string;
+export const secret = TOKEN_SECRET as string;
+export const adminPass = ADMIN_PASS as string;
 
 export default client
