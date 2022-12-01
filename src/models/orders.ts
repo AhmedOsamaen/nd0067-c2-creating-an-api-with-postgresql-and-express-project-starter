@@ -24,6 +24,11 @@ export class OrdersStore{
            try{
                const conn = await client.connect()
                const order_status = OrderStatus.active
+               const activeOrderSql = "select * from orders where user_id = ($1) and order_status = ($2)"
+               const activeOrder = await conn.query(activeOrderSql,[order.user_id,order_status])
+               if(activeOrder.rows[0]){
+                throw new Error(`An order is already Active for user ${order.user_id} `)
+               }
                const sql = 'INSERT INTO Orders (user_id,order_status) VALUES($1, $2) RETURNING *'
                
                const result = await conn.query(sql,[order.user_id,order_status])

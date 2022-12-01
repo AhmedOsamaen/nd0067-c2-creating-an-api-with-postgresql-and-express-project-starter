@@ -14,6 +14,30 @@ export type Cart={
 }
 
 export class OrderProductsService{
+
+    async index():Promise<OrderProducts[]>{
+        try{
+            const conn = await client.connect()
+            const sql = 'select * from Orders'
+            const result = await conn.query(sql)
+            let orderProdsResult:OrderProducts[]=[]
+            if(result.rows){
+                const orderProductsSql = 'SELECT product_id, quantity FROM orders_products WHERE order_id=($1)'
+                for(let i of result.rows){
+                    const prodResult = await conn.query(orderProductsSql, [i.id])
+    
+                    const orderProduct = prodResult.rows
+
+                    const orderProducts :OrderProducts = {...i,products:orderProduct}
+                    orderProdsResult.push(orderProducts);
+                }
+            }
+            conn.release()
+            return orderProdsResult
+        }catch(err){
+            throw new Error('could not get Orders'+err); 
+        }
+       }
       async addProduct(quantity: number, orderId: string, productId: string): Promise<Orders> {
         // get order to see if it is open
         try {

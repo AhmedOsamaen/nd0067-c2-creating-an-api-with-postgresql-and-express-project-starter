@@ -11,6 +11,11 @@ const index = async(req:Request,res:Response)=>{
     res.json(orders);
 }
 
+const orderProductsIndex = async(req:Request,res:Response)=>{
+    const orders = await orderProdService.index()
+    res.json(orders);
+}
+
 const getorderById = async(req:Request,res:Response)=>{
     const orders = await ordersStore.getById(req.params.id)
     res.json(orders);
@@ -84,7 +89,7 @@ const addProductToOrder = async (req: Request, res: Response) => {
   }
 
 const allOrders_routes = (app: express.Application)=>{
-    app.get('/orders',index)
+    app.get('/orders',orderProductsIndex)
     app.post('/orders', createorder)
     app.put('/orders/complete/:id', completeOrder)
     app.get('/orders/:id', getOrderProductsDetailsByOrderId)
