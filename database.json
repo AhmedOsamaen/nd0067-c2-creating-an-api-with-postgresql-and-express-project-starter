@@ -2,14 +2,14 @@
     "dev": {
       "driver": "pg",
       "host": "127.0.0.1",
-      "database": "store_front",
+      "database": "eccommerce_store",
       "user": "postgres",
-      "password": "dgkyc"
+      "password": "######"
     },"test":{
       "driver": "pg",
       "host": "127.0.0.1",
-      "database": "store_front_test",
+      "database": "eccommerce_store_test",
       "user": "postgres",
-      "password": "dgkyc"
+      "password": "######"
     }
   }
