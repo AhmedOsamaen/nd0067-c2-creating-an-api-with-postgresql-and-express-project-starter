@@ -52,19 +52,27 @@ var index = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 var getUserById = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var users, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, userStore.getById(req.params.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, userStore.getById(req.params.id)];
             case 1:
                 users = _a.sent();
                 res.json(users);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(400);
+                res.json(err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, newUser, err_1;
+    var user, newUser, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -80,16 +88,16 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 res.json(newUser);
                 return [3 /*break*/, 3];
             case 2:
-                err_1 = _a.sent();
+                err_2 = _a.sent();
                 res.status(400);
-                res.json(err_1);
+                res.json(err_2);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
 var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, newUser, err_2;
+    var user, newUser, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -105,16 +113,16 @@ var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, vo
                 res.json(newUser);
                 return [3 /*break*/, 3];
             case 2:
-                err_2 = _a.sent();
+                err_3 = _a.sent();
                 res.status(400);
-                res.json(err_2);
+                res.json(err_3);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
 var deleteUserById = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users, err_3;
+    var users, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -125,9 +133,9 @@ var deleteUserById = function (req, res) { return __awaiter(void 0, void 0, void
                 res.json(users);
                 return [3 /*break*/, 3];
             case 2:
-                err_3 = _a.sent();
+                err_4 = _a.sent();
                 res.status(400);
-                res.json(err_3);
+                res.json(err_4);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

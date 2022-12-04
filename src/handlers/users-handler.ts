@@ -11,8 +11,14 @@ const index = async(req:Request,res:Response)=>{
 }
 
 const getUserById = async(req:Request,res:Response)=>{
-    const users = await userStore.getById(req.params.id)
-    res.json(users);
+    try{
+        const users = await userStore.getById(req.params.id)
+        res.json(users);
+    }
+    catch(err) {
+        res.status(400)
+        res.json(err)
+    }
 }
 
 const createUser = async(req:Request,res:Response)=>{

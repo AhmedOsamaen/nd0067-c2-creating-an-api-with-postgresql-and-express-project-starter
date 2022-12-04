@@ -2,10 +2,24 @@
 
 This Repo is a fork for the FWD Starter project
 
+
+### .env file 
+
+POSTGRES_HOST=127.0.0.1
+                POSTGRES_DB=eccommerce_store
+                POSTGRES_TEST_DB=eccommerce_store_test
+                POSTGRES_USER=postgres (Your created user for postgres)
+                POSTGRES_PASSWORD=#### (Your created password for postgres)
+                BCRYPT_PASSWORD=################ (Your string crypted password as desired)
+                SALT_ROUNDS=10 (or any number as desired)
+                TOKEN_SECRET=################ (Your string token secret as desired)
+                ADMIN_PASS=######## (Your Admin desired password will be discussed later in API ENDPOINTS Instructions)
+                ENV=dev (will be changed to test when we run test)
+
 ### 1 DB Setup And Configuration
 
     1- create .env file in your project directory
-    2- Add the DB & APP Configraution as follows:
+    2- Add the DB & APP Configrautions as follows:
                 POSTGRES_HOST=127.0.0.1
                 POSTGRES_DB=eccommerce_store
                 POSTGRES_TEST_DB=eccommerce_store_test
@@ -27,6 +41,18 @@ This Repo is a fork for the FWD Starter project
     To be able to run the project:
         1-In the terminal run 'npm run build'
         2- run'node dist/server' after that the app will start on port localhost:3000
+
+### Tests
+
+To run tests do the following:
+
+        1- open .env file you created in the project directory
+        2- change the ENV parameter to test
+        3- Make sure th database.json test attributes are correct 
+        4- open terminal and run 'npm run test'
+        5- After finishing testing open .env file and change ENV parameter to dev again if you want to re run the application.
+
+
 
 ### API ENDPOINTS Access
     You can access all the api endpoints i have created via postman.
@@ -96,16 +122,6 @@ orders (id serial primary key,user_id bigint [Foreign key for users],order_statu
 
 The Order is created for user with default order status to active. then you can add products to order and then you can complete the order
 
-
-### Tests
-
-To run tests do the following:
-
-        1- open .env file in the project directory
-        2- change the ENV parameter to test
-        3- Make sure th database.json test attributes are correct 
-        4- open terminal and run 'npm run test'
-        5- After finishing testing open .env file and change ENV parameter to dev again if you want to re run the application.
 
 
 ### Extra Scripts
