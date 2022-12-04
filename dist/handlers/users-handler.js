@@ -40,14 +40,22 @@ var users_1 = require("../models/users");
 var jwt_auth_1 = require("../middleware/jwt-auth");
 var userStore = new users_1.UsersStore();
 var index = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var users, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, userStore.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, userStore.index()];
             case 1:
                 users = _a.sent();
                 res.json(users);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                res.status(500);
+                res.send("Res:" + error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
@@ -80,7 +88,7 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 user = {
                     firstname: req.body.firstName,
                     lastname: req.body.lastName,
-                    password: req.body.password
+                    password: req.body.password,
                 };
                 return [4 /*yield*/, userStore.create(user)];
             case 1:
@@ -105,7 +113,7 @@ var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, vo
                 user = {
                     firstname: req.body.firstName,
                     lastname: req.body.lastName,
-                    password: req.body.password
+                    password: req.body.password,
                 };
                 return [4 /*yield*/, userStore.authenticate(user)];
             case 1:
@@ -142,10 +150,10 @@ var deleteUserById = function (req, res) { return __awaiter(void 0, void 0, void
     });
 }); };
 var allUsers_routes = function (app) {
-    app.get('/users', jwt_auth_1.verifyAuthToken, index);
-    app.post('/users', jwt_auth_1.verifyAuthToken, createUser);
-    app.get('/users/:id', jwt_auth_1.verifyAuthToken, getUserById);
-    app.delete('/users/:id', jwt_auth_1.verifyAuthToken, deleteUserById);
-    app.post('/users/auth', authenticateUser);
+    app.get("/users", jwt_auth_1.verifyAuthToken, index);
+    app.post("/users", createUser);
+    app.get("/users/:id", jwt_auth_1.verifyAuthToken, getUserById);
+    app.delete("/users/:id", jwt_auth_1.verifyAuthToken, deleteUserById);
+    app.post("/users/auth", authenticateUser);
 };
 exports.default = allUsers_routes;

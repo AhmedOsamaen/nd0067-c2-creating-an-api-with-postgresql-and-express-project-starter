@@ -42,38 +42,62 @@ var order_product_service_1 = require("../services/order-product.service");
 var ordersStore = new orders_1.OrdersStore();
 var orderProdService = new order_product_service_1.OrderProductsService();
 var index = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var orders;
+    var orders, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, ordersStore.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, ordersStore.index()];
             case 1:
                 orders = _a.sent();
                 res.json(orders);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                res.status(500);
+                res.send("Res:" + error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var orderProductsIndex = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var orders;
+    var orders, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, orderProdService.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, orderProdService.index()];
             case 1:
                 orders = _a.sent();
                 res.json(orders);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                res.status(500);
+                res.send("Res:" + error_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var getorderById = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var orders;
+    var orders, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, ordersStore.getById(req.params.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, ordersStore.getById(req.params.id)];
             case 1:
                 orders = _a.sent();
                 res.json(orders);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                res.status(500);
+                res.send("Res:" + error_3);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
@@ -226,13 +250,13 @@ var addProductToOrder = function (req, res) { return __awaiter(void 0, void 0, v
     });
 }); };
 var allOrders_routes = function (app) {
-    app.get('/orders', orderProductsIndex);
-    app.post('/orders', createorder);
-    app.put('/orders/complete/:id', completeOrder);
-    app.get('/orders/:id', getOrderProductsDetailsByOrderId);
-    app.get('/orders/user/:id', jwt_auth_1.verifyAuthToken, getActiveOrderByUserId);
-    app.get('/orders/user/complete/:id', jwt_auth_1.verifyAuthToken, getCompletedOrdersByUserId);
-    app.delete('/orders/:id', deleteorderById);
-    app.post('/orders/:id/products', addProductToOrder);
+    app.get("/orders", jwt_auth_1.verifyAuthToken, orderProductsIndex);
+    app.post("/orders", jwt_auth_1.verifyAuthToken, createorder);
+    app.put("/orders/complete/:id", jwt_auth_1.verifyAuthToken, completeOrder);
+    app.get("/orders/:id", jwt_auth_1.verifyAuthToken, getOrderProductsDetailsByOrderId);
+    app.get("/orders/user/:id", jwt_auth_1.verifyAuthToken, getActiveOrderByUserId);
+    app.get("/orders/user/complete/:id", jwt_auth_1.verifyAuthToken, getCompletedOrdersByUserId);
+    app.delete("/orders/:id", jwt_auth_1.verifyAuthToken, deleteorderById);
+    app.post("/orders/:id/products", jwt_auth_1.verifyAuthToken, addProductToOrder);
 };
 exports.default = allOrders_routes;

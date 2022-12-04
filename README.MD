@@ -37,6 +37,10 @@ POSTGRES_HOST=127.0.0.1
 
     6-run 'npm run create-ddl' to migrate the ddl to the db
 
+### Ports
+        1-DB port is the default: 5432
+        2-Server port is:3000
+
 ### 2 running the project
     To be able to run the project:
         1-In the terminal run 'npm run build'

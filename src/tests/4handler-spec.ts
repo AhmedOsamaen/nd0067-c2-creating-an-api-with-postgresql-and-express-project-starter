@@ -5,8 +5,16 @@ const request = supertest(app);
 let test_token = ''
 
 describe('Test USERS endpoint responses', () => {
+  it('creates new user endpoint', async() => {
+    const requestBody={"firstName":"Ahmed","lastName":"Osama","password":"Ss123456"}
+  await  request
+      .post('/users').send(requestBody).set('Content-Type', 'application/json')
+      .set('Accept', 'application/json').set('Authorization', test_token)
+      .expect(200);
+  });
+
   it('gets token by admin user endpoint',async () => {
-    const requestBody={"firstName":"Admin",
+    const requestBody={"firstName":"Ahmed",
                         "password":"Ss123456"}
    const respp= await request
        .post('/users/auth').send(requestBody).set('Content-Type', 'application/json')
@@ -15,13 +23,7 @@ describe('Test USERS endpoint responses', () => {
        test_token = 'Bearer '+ respp.body
    });
 
-    it('creates new user endpoint', async() => {
-      const requestBody={"firstName":"Ahmed","lastName":"Osama","password":"Ss123456"}
-    await  request
-        .post('/users').send(requestBody).set('Content-Type', 'application/json')
-        .set('Accept', 'application/json').set('Authorization', test_token)
-        .expect(200);
-    });
+    
 
     it('gets the users index endpoint', async() => {
       await request
@@ -104,26 +106,26 @@ describe('Test USERS endpoint responses', () => {
       const requestBody={"user_id":3}
     await  request
         .post('/orders').send(requestBody).set('Content-Type', 'application/json')
-        .set('Accept', 'application/json')
+        .set('Accept', 'application/json').set('Authorization', test_token)
         .expect(200);
     });
  
     it('gets the orders endpoint', (done) => {
       request
         .get('/orders')
-        .expect(200);
+        .expect(200).set('Authorization', test_token);
       done();
     });
 
     it('gets active order by user id endpoint', async() => {
       await request
          .get('/orders/user/3').set('Authorization', test_token)
-         .expect(200);
+         .expect(200).set('Authorization', test_token);
      });
 
      it('completes user order by order id endpoint', async() => {
       await request
-         .put('/orders/complete/1')
+         .put('/orders/complete/1').set('Authorization', test_token)
          .expect(200);
      });
 

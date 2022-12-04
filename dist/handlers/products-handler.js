@@ -40,26 +40,42 @@ var jwt_auth_1 = require("../middleware/jwt-auth");
 var products_1 = require("../models/products");
 var productsStore = new products_1.ProductsStore();
 var index = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+    var products, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, productsStore.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, productsStore.index()];
             case 1:
                 products = _a.sent();
                 res.json(products);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                res.status(500);
+                res.send("Res:" + error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 var getProductById = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+    var products, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, productsStore.getById(req.params.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, productsStore.getById(req.params.id)];
             case 1:
                 products = _a.sent();
                 res.json(products);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                res.status(500);
+                res.send("Res:" + error_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
@@ -71,7 +87,7 @@ var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 
                 _a.trys.push([0, 2, , 3]);
                 product = {
                     name: req.body.name,
-                    price: req.body.price
+                    price: req.body.price,
                 };
                 return [4 /*yield*/, productsStore.create(product)];
             case 1:
@@ -108,9 +124,9 @@ var deleteProductById = function (req, res) { return __awaiter(void 0, void 0, v
     });
 }); };
 var allProducts_routes = function (app) {
-    app.get('/products', index);
-    app.post('/products', jwt_auth_1.verifyAuthToken, createProduct);
-    app.get('/products/:id', getProductById);
-    app.delete('/products/:id', deleteProductById);
+    app.get("/products", index);
+    app.post("/products", jwt_auth_1.verifyAuthToken, createProduct);
+    app.get("/products/:id", getProductById);
+    app.delete("/products/:id", deleteProductById);
 };
 exports.default = allProducts_routes;

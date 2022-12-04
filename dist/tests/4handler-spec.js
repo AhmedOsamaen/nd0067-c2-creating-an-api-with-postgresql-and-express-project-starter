@@ -44,24 +44,6 @@ var server_1 = __importDefault(require("../server"));
 var request = (0, supertest_1.default)(server_1.default);
 var test_token = '';
 describe('Test USERS endpoint responses', function () {
-    it('gets token by admin user endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var requestBody, respp;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    requestBody = { "firstName": "Admin",
-                        "password": "Ss123456" };
-                    return [4 /*yield*/, request
-                            .post('/users/auth').send(requestBody).set('Content-Type', 'application/json')
-                            .set('Accept', 'application/json')
-                            .expect(200)];
-                case 1:
-                    respp = _a.sent();
-                    test_token = 'Bearer ' + respp.body;
-                    return [2 /*return*/];
-            }
-        });
-    }); });
     it('creates new user endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
         var requestBody;
         return __generator(this, function (_a) {
@@ -74,6 +56,24 @@ describe('Test USERS endpoint responses', function () {
                             .expect(200)];
                 case 1:
                     _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('gets token by admin user endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var requestBody, respp;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    requestBody = { "firstName": "Ahmed",
+                        "password": "Ss123456" };
+                    return [4 /*yield*/, request
+                            .post('/users/auth').send(requestBody).set('Content-Type', 'application/json')
+                            .set('Accept', 'application/json')
+                            .expect(200)];
+                case 1:
+                    respp = _a.sent();
+                    test_token = 'Bearer ' + respp.body;
                     return [2 /*return*/];
             }
         });
@@ -230,7 +230,7 @@ describe('Test Orders endpoint responses', function () {
                     requestBody = { "user_id": 3 };
                     return [4 /*yield*/, request
                             .post('/orders').send(requestBody).set('Content-Type', 'application/json')
-                            .set('Accept', 'application/json')
+                            .set('Accept', 'application/json').set('Authorization', test_token)
                             .expect(200)];
                 case 2:
                     _a.sent();
@@ -241,7 +241,7 @@ describe('Test Orders endpoint responses', function () {
     it('gets the orders endpoint', function (done) {
         request
             .get('/orders')
-            .expect(200);
+            .expect(200).set('Authorization', test_token);
         done();
     });
     it('gets active order by user id endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -249,7 +249,7 @@ describe('Test Orders endpoint responses', function () {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, request
                         .get('/orders/user/3').set('Authorization', test_token)
-                        .expect(200)];
+                        .expect(200).set('Authorization', test_token)];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
@@ -260,7 +260,7 @@ describe('Test Orders endpoint responses', function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, request
-                        .put('/orders/complete/1')
+                        .put('/orders/complete/1').set('Authorization', test_token)
                         .expect(200)];
                 case 1:
                     _a.sent();
