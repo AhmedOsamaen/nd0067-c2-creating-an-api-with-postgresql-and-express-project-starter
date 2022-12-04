@@ -65,7 +65,7 @@ const deleteUserById = async(req:Request,res:Response)=>{
 
 const allUsers_routes = (app: express.Application)=>{
     app.get('/users',verifyAuthToken,index)
-    app.post('/users',verifyAuthToken, createUser)
+    app.post('/users', createUser)
     app.get('/users/:id',verifyAuthToken, getUserById)
     app.delete('/users/:id',verifyAuthToken, deleteUserById)
     app.post('/users/auth', authenticateUser)
