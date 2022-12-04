@@ -7,7 +7,7 @@
     "start": "nodemon src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
     "jasmine": "jasmine",
-    "test": "set NODE_ENV=test& db-migrate db:create eccommerce_store_test && db-migrate --env test up && npm run build && npm run jasmine && db-migrate db:drop eccommerce_store_test",
+    "test": "set ENV=test& db-migrate db:create eccommerce_store_test && db-migrate --env test up && npm run build && npm run jasmine && db-migrate db:drop eccommerce_store_test",
     "tsc": "tsc",
     "build": "npx tsc",
     "create-db": "db-migrate --env dev db:create eccommerce_store",

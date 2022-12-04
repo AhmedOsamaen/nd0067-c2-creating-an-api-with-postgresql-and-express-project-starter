@@ -12,10 +12,10 @@ const {
     SALT_ROUNDS,
     TOKEN_SECRET,
     ADMIN_PASS,
-    NODE_ENV
+    ENV
 } = process.env 
 let client=new Pool
-if(NODE_ENV==='dev'){
+if(ENV==='dev'){
     client = new Pool({
         host: POSTGRES_HOST,
         database: POSTGRES_DB,
@@ -24,8 +24,7 @@ if(NODE_ENV==='dev'){
     })
 }
 
-if(NODE_ENV==='test'){
-    console.log('using test env :>> ');
+if(ENV==='test'){
     client = new Pool({
         host: POSTGRES_HOST,
         database: POSTGRES_TEST_DB,
