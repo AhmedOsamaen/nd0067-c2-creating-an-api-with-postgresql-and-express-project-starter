@@ -9,7 +9,7 @@ describe('Test USERS endpoint responses', () => {
     const requestBody={"firstName":"Ahmed","lastName":"Osama","password":"Ss123456"}
   await  request
       .post('/users').send(requestBody).set('Content-Type', 'application/json')
-      .set('Accept', 'application/json').set('Authorization', test_token)
+      .set('Accept', 'application/json')
       .expect(200);
   });
 
@@ -21,11 +21,13 @@ describe('Test USERS endpoint responses', () => {
        .set('Accept', 'application/json')
        .expect(200);
        test_token = 'Bearer '+ respp.body
+       console.log('test_token :>> ', test_token);
    });
 
     
 
     it('gets the users index endpoint', async() => {
+      console.log('test_token before :>> ', test_token);
       await request
          .get('/users').set('Authorization', test_token)
          .expect(200);

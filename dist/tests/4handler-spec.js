@@ -52,7 +52,7 @@ describe('Test USERS endpoint responses', function () {
                     requestBody = { "firstName": "Ahmed", "lastName": "Osama", "password": "Ss123456" };
                     return [4 /*yield*/, request
                             .post('/users').send(requestBody).set('Content-Type', 'application/json')
-                            .set('Accept', 'application/json').set('Authorization', test_token)
+                            .set('Accept', 'application/json')
                             .expect(200)];
                 case 1:
                     _a.sent();
@@ -74,6 +74,7 @@ describe('Test USERS endpoint responses', function () {
                 case 1:
                     respp = _a.sent();
                     test_token = 'Bearer ' + respp.body;
+                    console.log('test_token :>> ', test_token);
                     return [2 /*return*/];
             }
         });
@@ -81,9 +82,11 @@ describe('Test USERS endpoint responses', function () {
     it('gets the users index endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request
-                        .get('/users').set('Authorization', test_token)
-                        .expect(200)];
+                case 0:
+                    console.log('test_token before :>> ', test_token);
+                    return [4 /*yield*/, request
+                            .get('/users').set('Authorization', test_token)
+                            .expect(200)];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
